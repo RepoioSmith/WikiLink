@@ -1,5 +1,6 @@
 import { registerHandlers } from './ipcHandlers';
 import { app, BrowserWindow } from 'electron';
+import { dbService } from '../services/DatabaseService';
 
 // Estas constantes las genera el sistema de build.
 // El PRELOAD es vital para la seguridad, así que lo mantenemos.
@@ -24,6 +25,18 @@ const createWindow = (): void => {
       contextIsolation: true,
     },
   });
+
+  //const testVaultPath = app.getPath('userData'); 
+  
+  try {
+    console.log("--- INICIANDO SERVICIO DB ---");
+    dbService.int(testVaultPath);
+    // Probamos insertar algo
+    dbService.indexFile('Bienvenida.md', Date.now());
+    console.log("--- PRUEBA DB EXITOSA ---");
+  } catch (error) {
+    console.error("!!! ERROR DB !!!", error);
+  }
 
   // --- CAMBIO CLAVE AQUÍ ---
   // Verificamos si la app NO está empaquetada (es decir, estamos en modo desarrollo)

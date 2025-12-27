@@ -1,9 +1,9 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
-// Aquí exponemos funciones seguras al Frontend
 contextBridge.exposeInMainWorld('electronAPI', {
-  // Función para guardar: React envía 'content', Electron devuelve confirmación
-  saveContent: (content: string) => ipcRenderer.invoke('dialog:saveContent', content),
+  // Abrir carpeta (devuelve el árbol de archivos)
+  openVault: () => ipcRenderer.invoke('dialog:openVault'),
   
-  // Aquí agregaremos más funciones en el futuro (ej. loadFiles, createFolder)
+  // Guardar archivo específico (path relativo + contenido)
+  saveFile: (path: string, content: string) => ipcRenderer.invoke('app:saveFile', path, content)
 });
